@@ -34,15 +34,13 @@ class ProductController extends Controller
         return response()->json(['products' => $products]);
     }
 
-    // public function store(StoreProductRequest $request)
-    // {
-    //     $product = Product::create($request->validated());
-    //     return response()->json(['message' => 'Produk berhasil ditambahkan']);
-    // }
+    public function store(StoreProductRequest $request)
+    {
+        $product = Product::create($request->validated());
+        return response()->json(['message' => 'Produk berhasil ditambahkan']);
+    }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show($id)
     {
         $product = Product::findOrFail($id);
@@ -54,17 +52,17 @@ class ProductController extends Controller
         }
     }
 
-    // public function update(UpdateProductRequest $request, string $id)
-    // {
-    //     $product = Product::findOrFail($id);
+    public function update(UpdateProductRequest $request, string $id)
+    {
+        $product = Product::findOrFail($id);
 
-    //     if (!$product) {
-    //         return response()->json(['message' => 'Produk tidak ditemukan'], 404);
-    //     }
+        if (!$product) {
+            return response()->json(['message' => 'Produk tidak ditemukan'], 404);
+        }
 
-    //     $product->update($request->all());
-    //     return response()->json(['message' => 'Produk berhasil diupdate']);
-    // }
+        $product->update($request->all());
+        return response()->json(['message' => 'Produk berhasil diupdate']);
+    }
 
     public function destroy (string $id)
     {
