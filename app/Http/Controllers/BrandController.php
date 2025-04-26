@@ -10,9 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $brands = Brand::paginate(10);
+        $brands_name = $request->input('brand_name');
+        $brands = Brand::when($brands_name, function ($query, $brands_name) {
+            $query->where('name', 'like', "%{$brands_name}%");
+        })
+            ->orderBy('name', 'desc')
+            ->paginate(10);
+
         return response()->json(['brand' => $brands]);
     }
 

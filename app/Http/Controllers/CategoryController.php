@@ -5,14 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::paginate(10);
+        $category_name = $request->input('category_name');
+        $categories = Category::when($category_name, function ($query, $category_name) {
+            $query->where('name', 'like', "%{$category_name}%");
+        })
+            ->orderBy('name', 'desc')
+            ->paginate(10);
+
         return response()->json(['category' => $categories]);
     }
 
